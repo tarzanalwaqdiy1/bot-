@@ -1,10 +1,16 @@
-name: Baileys WhatsApp Bot
+name: Node.js CI
 
 on:
-  workflow_dispatch:  # ✅ لتشغيله يدويًا من GitHub
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  run-bot:
+  build:
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,16 +18,16 @@ jobs:
         node-version: [20.x]
 
     steps:
-      - name: 🔄 نسخ الريبو
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: 🟢 تثبيت Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
 
-      - name: 📦 تثبيت التبعيات
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: 🚀 تشغيل البوت
-        run: npm start
+    - name: Start application
+      run: npm start
